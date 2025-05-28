@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Tour Agency</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Quicksand:wght@300;400;500&display=swap" rel="stylesheet"> <!-- Google Fonts -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> <!-- Font Awesome Icon Library -->
     <style>
         * {
@@ -14,8 +15,8 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Roboto', sans-serif;
+            background-color: #fafafa;
             color: #333;
         }
 
@@ -31,7 +32,8 @@
         .logo {
             color: white;
             text-decoration: none;
-            font-size: 28px;
+            font-size: 30px;
+            font-family: 'Quicksand', sans-serif;
             display: flex;
             align-items: center;
         }
@@ -47,35 +49,16 @@
             gap: 15px;
         }
 
-        .toggle {
-            appearance: none;
-            width: 50px;
-            height: 25px;
-            border-radius: 25px;
-            background-color: #ccc;
-            position: relative;
+        .flag-button, .currency-button {
+            background: none;
+            border: none;
             cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .toggle:checked {
-            background-color: #4CAF50;
-        }
-
-        .toggle::after {
-            content: '';
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 21px;
-            height: 21px;
-            border-radius: 50%;
-            background-color: white;
+            font-size: 20px;
             transition: transform 0.3s ease;
         }
 
-        .toggle:checked::after {
-            transform: translateX(25px);
+        .flag-button:hover, .currency-button:hover {
+            transform: scale(1.2);
         }
 
         main {
@@ -91,13 +74,12 @@
 
         .tour-card {
             background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 10px;
+            border-radius: 12px;
             width: 23%;
             margin-bottom: 20px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
         }
 
@@ -106,23 +88,26 @@
             height: auto;
         }
 
-        .tour-card h3, .tour-card p {
+        .tour-card h3 {
             padding: 15px;
-            font-size: 16px;
+            font-size: 20px;
+            color: #2e3b4e;
+            font-family: 'Quicksand', sans-serif;
         }
 
-        .tour-card h3 {
-            font-size: 20px;
-            color: #333;
+        .tour-card p {
+            padding: 0 15px;
+            font-size: 16px;
+            color: #555;
         }
 
         .tour-card button {
             background-color: #4CAF50;
             color: white;
             border: none;
-            padding: 10px;
+            padding: 12px;
             width: 100%;
-            border-radius: 0 0 10px 10px;
+            border-radius: 0 0 12px 12px;
             font-size: 16px;
             cursor: pointer;
         }
@@ -135,9 +120,10 @@
         footer {
             background-color: #2e3b4e;
             color: white;
-            padding: 15px 20px;
+            padding: 20px 20px;
             text-align: center;
             margin-top: 30px;
+            font-size: 14px;
         }
 
         .price-note {
@@ -149,6 +135,12 @@
             font-size: 14px;
             color: #333;
             margin-top: 15px;
+            padding: 0 20px;
+            display: none;
+        }
+
+        .tour-card.active .tour-history {
+            display: block;
         }
 
         .tour-card a {
@@ -160,7 +152,7 @@
         let currentLanguage = "en";
         let currentCurrency = "USD";
 
-        // Function to change language
+        // Toggle function for language
         function changeLanguage(lang) {
             currentLanguage = lang;
             document.querySelectorAll('[data-' + lang + ']').forEach(element => {
@@ -171,7 +163,7 @@
             });
         }
 
-        // Function to change currency
+        // Toggle function for currency
         function changeCurrency(currency) {
             currentCurrency = currency;
             const priceElements = document.querySelectorAll('.price');
@@ -193,6 +185,12 @@
                 }
             });
         }
+
+        // Toggle for showing more information on the tour
+        function toggleTourInfo(tourId) {
+            const tourCard = document.getElementById(tourId);
+            tourCard.classList.toggle('active');
+        }
     </script>
 </head>
 <body>
@@ -202,41 +200,52 @@
         </a>
 
         <div class="toggle-container">
-            <label for="language-toggle">Language</label>
-            <input type="checkbox" id="language-toggle" class="toggle" onchange="changeLanguage(this.checked ? 'ru' : 'en')">
+            <!-- Language Selector -->
+            <button class="flag-button" onclick="changeLanguage('ru')">
+                <img src="ru-flag.png" alt="Russian Flag">
+            </button>
+            <button class="flag-button" onclick="changeLanguage('az')">
+                <img src="az-flag.png" alt="Azerbaijani Flag">
+            </button>
+            <button class="flag-button" onclick="changeLanguage('en')">
+                <img src="uk-flag.png" alt="British Flag">
+            </button>
 
-            <label for="currency-toggle">Currency</label>
-            <input type="checkbox" id="currency-toggle" class="toggle" onchange="changeCurrency(this.checked ? 'AZN' : 'USD')">
+            <!-- Currency Selector -->
+            <button class="currency-button" onclick="changeCurrency('USD')">USD</button>
+            <button class="currency-button" onclick="changeCurrency('AZN')">AZN</button>
+            <button class="currency-button" onclick="changeCurrency('RUB')">RUB</button>
         </div>
     </header>
 
     <main>
         <section class="tour-cards">
-            <div class="tour-card" id="night-baku">
+            <div class="tour-card" id="night-baku" onclick="toggleTourInfo('night-baku')">
                 <a href="baku-night.html">
                     <img src="baku-night.jpg" alt="Night Baku">
                     <h3 data-en="Night City Baku" data-ru="Ночной Баку" data-az="Gecə Baku"></h3>
-                    <p data-en="Explore the vibrant night life of Baku." data-ru="Исследуйте яркую ночную жизнь Баку." data-az="Bakının canlı gecə həyatını kəşf edin."></p>
+                    <p data-en="Explore the vibrant nightlife of Baku." data-ru="Исследуйте яркую ночную жизнь Баку." data-az="Bakının canlı gecə həyatını kəşf edin."></p>
                     <p class="price" data-usd="111" data-azn="111" data-rub="111">$111 <span class="price-note">per 1 USD</span></p>
                     <button>Подробнее</button>
                 </a>
                 <div class="tour-history">
-                    <p data-en="Night Baku is a vibrant city tour where you can explore Baku's dazzling lights, cultural landmarks, and lively nightlife." 
-                       data-ru="Ночной Баку — это яркое ночное путешествие по городу, где можно исследовать ослепительные огни Баку, культурные достопримечательности и оживленную ночную жизнь." 
+                    <p data-en="Night Baku is a vibrant city tour where you can explore Baku's dazzling lights, cultural landmarks, and lively nightlife."
+                       data-ru="Ночной Баку — это яркое ночное путешествие по городу, где можно исследовать ослепительные огни Баку, культурные достопримечательности и оживленную ночную жизнь."
                        data-az="Gecə Baku, Bakının parlaq işıqlarını, mədəniyyət abidələrini və canlı gecə həyatını kəşf edəcəyiniz parlaq bir şəhər turudur.">
                     </p>
                 </div>
             </div>
-            <div class="tour-card" id="qabala">
+
+            <div class="tour-card" id="qabala" onclick="toggleTourInfo('qabala')">
                 <a href="qabala.html">
                     <img src="qabala.jpg" alt="Qabala">
                     <h3 data-en="Qabala" data-ru="Кабала" data-az="Qəbələ"></h3>
-                    <p data-en="Visit the beautiful mountains and nature of Qabala." data-ru="Посетите красивые горы и природу Кабалы." data-az="Qəbələnin gözəl dağlarını və təbiətini ziyarət edin."></p>
-                    <p class="price" data-usd="150" data-azn="150" data-rub="150">$150 <span class="price-note">per 1 USD</span></p>
+                    <p data-en="Discover the beauty of nature with mountains and forests." data-ru="Откройте для себя красоту природы с горами и лесами." data-az="Təbiətin gözəlliyini dağlar və meşələrlə kəşf edin."></p>
+                    <p class="price" data-usd="111" data-azn="111" data-rub="111">$111 <span class="price-note">per 1 USD</span></p>
                     <button>Подробнее</button>
                 </a>
                 <div class="tour-history">
-                    <p data-en="Qabala is known for its stunning natural landscapes, perfect for hiking, adventure, and relaxation. Explore lush forests and majestic mountains."
+                    <p data-en="Qabala is known for its amazing natural landscapes, perfect for hiking, adventure, and relaxation. Explore green forests and majestic mountains."
                        data-ru="Кабала известна своими удивительными природными пейзажами, идеально подходящими для походов, приключений и отдыха. Исследуйте зелёные леса и величественные горы."
                        data-az="Qəbələ, təbiətinin gözəlliyi ilə məşhurdur, burada dağ yürüşləri, macəra və istirahət üçün mükəmməl şərait var. Yaşıl meşələri və möhtəşəm dağları kəşf edin.">
                     </p>
