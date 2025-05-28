@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tour Agency</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> <!-- Font Awesome Icon Library -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        header {
+            background-color: #2e3b4e;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            text-decoration: none;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            font-size: 28px;
+        }
+
+        .language-selector, .currency-selector {
+            display: flex;
+            align-items: center;
+        }
+
+        .language-selector button, .currency-selector button {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .language-selector button:hover, .currency-selector button:hover {
+            background-color: #eee;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .tour-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .tour-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            width: 23%;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .tour-card img {
+            width: 100%;
+            height: auto;
+        }
+
+        .tour-card h3, .tour-card p {
+            padding: 10px;
+        }
+
+        .tour-card button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .tour-card:hover {
+            transform: scale(1.05);
+        }
+
+        footer {
+            background-color: #2e3b4e;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .price-note {
+            font-size: 12px;
+            color: #888;
+        }
+    </style>
+    <script>
+        let currentCurrency = "USD";
+
+        // Function to change language
+        function changeLanguage(lang) {
+            document.querySelectorAll('[data-' + lang + ']').forEach(element => {
+                const key = element.dataset[lang];
+                if (key) {
+                    element.textContent = key;
+                }
+            });
+        }
+
+        // Function to change currency
+        function changeCurrency(currency) {
+            currentCurrency = currency;
+            const priceElements = document.querySelectorAll('.price');
+            priceElements.forEach(el => {
+                let priceInUSD = parseFloat(el.dataset.usd);
+                let priceInAZN = parseFloat(el.dataset.azn);
+                let priceInRUB = parseFloat(el.dataset.rub);
+
+                switch (currency) {
+                    case "USD":
+                        el.textContent = `$${priceInUSD.toFixed(2)} <span class="price-note">per 1 USD</span>`;
+                        break;
+                    case "AZN":
+                        el.textContent = `${priceInAZN.toFixed(2)} AZN <span class="price-note">per 1 AZN</span>`;
+                        break;
+                    case "RUB":
+                        el.textContent = `${priceInRUB.toFixed(2)} RUB <span class="price-note">per 1 RUB</span>`;
+                        break;
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <a href="#" class="logo">
+            <i class="fas fa-home"></i> Nar Tour Agency <!-- The icon and name are now clickable -->
+        </a>
+
+        <div class="language-selector">
+            <button onclick="changeLanguage('en')">English</button>
+            <button onclick="changeLanguage('ru')">Русский</button>
+            <button onclick="changeLanguage('az')">Azərbaycan</button>
+        </div>
+
+        <div class="currency-selector">
+            <button onclick="changeCurrency('USD')">USD</button>
+            <button onclick="changeCurrency('AZN')">AZN</button>
+            <button onclick="changeCurrency('RUB')">RUB</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="tour-cards">
+            <div class="tour-card" id="night-baku">
+                <img src="baku-night.jpg" alt="Night Baku">
+                <h3 data-en="Night City Baku" data-ru="Ночной Баку" data-az="Gecə Baku"></h3>
+                <p data-en="Explore the vibrant night life of Baku." data-ru="Исследуйте яркую ночную жизнь Баку." data-az="Bakının canlı gecə həyatını kəşf edin."></p>
+                <p class="price" data-usd="111" data-azn="111" data-rub="111">$111 <span class="price-note">per 1 USD</span></p>
+                <button>Подробнее</button>
+            </div>
+            <div class="tour-card" id="qabala">
+                <img src="qabala.jpg" alt="Qabala">
+                <h3 data-en="Qabala" data-ru="Кабала" data-az="Qəbələ"></h3>
+                <p data-en="Visit the beautiful mountains and nature of Qabala." data-ru="Посетите красивые горы и природу Кабалы." data-az="Qəbələnin gözəl dağlarını və təbiətini ziyarət edin."></p>
+                <p class="price" data-usd="150" data-azn="150" data-rub="150">$150 <span class="price-note">per 1 USD</span></p>
+                <button>Подробнее</button>
+            </div>
+            <div class="tour-card" id="quba">
+                <img src="quba.jpg" alt="Quba">
+                <h3 data-en="Quba" data-ru="Куба" data-az="Quba"></h3>
+                <p data-en="Explore the rich history and culture of Quba." data-ru="Исследуйте богатую историю и культуру Кубы." data-az="Qubanı zəngin tarix və mədəniyyətlə kəşf edin."></p>
+                <p class="price" data-usd="120" data-azn="120" data-rub="120">$120 <span class="price-note">per 1 USD</span></p>
+                <button>Подробнее</button>
+            </div>
+            <div class="tour-card" id="quba-shahdag">
+                <img src="quba-shahdag.jpg" alt="Quba Shahdag">
+                <h3 data-en="Quba - Shahdag" data-ru="Куба - Шахдаг" data-az="Quba - Şahdağ"></h3>
+                <p data-en="A combination of cultural exploration and nature in Shahdag." data-ru="Комбинация культурного исследования и природы в Шахдаге." data-az="Şahdağda mədəniyyət və təbiət birləşməsi."></p>
+                <p class="price" data-usd="130" data-azn="130" data-rub="130">$130 <span class="price-note">per 1 USD</span></p>
+                <button>Подробнее</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Tour Agency. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
