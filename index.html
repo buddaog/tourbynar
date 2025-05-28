@@ -15,55 +15,78 @@
 
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            background-color: #f4f4f4;
+            color: #333;
         }
 
         header {
             background-color: #2e3b4e;
-            padding: 10px 20px;
+            padding: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .logo {
             color: white;
             text-decoration: none;
-            font-size: 24px;
+            font-size: 28px;
             display: flex;
             align-items: center;
         }
 
         .logo i {
             margin-right: 10px;
-            font-size: 28px;
+            font-size: 32px;
         }
 
-        .language-selector, .currency-selector {
+        .toggle-container {
             display: flex;
             align-items: center;
+            gap: 15px;
         }
 
-        .language-selector button, .currency-selector button {
-            background-color: #fff;
-            border: 1px solid #ccc;
-            padding: 5px 10px;
+        .toggle {
+            appearance: none;
+            width: 50px;
+            height: 25px;
+            border-radius: 25px;
+            background-color: #ccc;
+            position: relative;
             cursor: pointer;
-            margin-left: 10px;
+            transition: background-color 0.3s ease;
         }
 
-        .language-selector button:hover, .currency-selector button:hover {
-            background-color: #eee;
+        .toggle:checked {
+            background-color: #4CAF50;
+        }
+
+        .toggle::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 21px;
+            height: 21px;
+            border-radius: 50%;
+            background-color: white;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle:checked::after {
+            transform: translateX(25px);
         }
 
         main {
-            padding: 20px;
+            padding: 30px 20px;
         }
 
         .tour-cards {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
+            gap: 20px;
         }
 
         .tour-card {
@@ -72,9 +95,10 @@
             border-radius: 10px;
             width: 23%;
             margin-bottom: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             transition: transform 0.3s ease;
+            cursor: pointer;
         }
 
         .tour-card img {
@@ -83,7 +107,13 @@
         }
 
         .tour-card h3, .tour-card p {
-            padding: 10px;
+            padding: 15px;
+            font-size: 16px;
+        }
+
+        .tour-card h3 {
+            font-size: 20px;
+            color: #333;
         }
 
         .tour-card button {
@@ -92,30 +122,47 @@
             border: none;
             padding: 10px;
             width: 100%;
+            border-radius: 0 0 10px 10px;
+            font-size: 16px;
             cursor: pointer;
         }
 
         .tour-card:hover {
             transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
         }
 
         footer {
             background-color: #2e3b4e;
             color: white;
-            padding: 20px;
+            padding: 15px 20px;
             text-align: center;
+            margin-top: 30px;
         }
 
         .price-note {
             font-size: 12px;
             color: #888;
         }
+
+        .tour-history {
+            font-size: 14px;
+            color: #333;
+            margin-top: 15px;
+        }
+
+        .tour-card a {
+            color: inherit;
+            text-decoration: none;
+        }
     </style>
     <script>
+        let currentLanguage = "en";
         let currentCurrency = "USD";
 
         // Function to change language
         function changeLanguage(lang) {
+            currentLanguage = lang;
             document.querySelectorAll('[data-' + lang + ']').forEach(element => {
                 const key = element.dataset[lang];
                 if (key) {
@@ -151,57 +198,43 @@
 <body>
     <header>
         <a href="#" class="logo">
-            <i class="fas fa-home"></i> Nar Tour Agency <!-- The icon and name are now clickable -->
+            <i class="fas fa-home"></i> Nar Tour Agency
         </a>
 
-        <div class="language-selector">
-            <button onclick="changeLanguage('en')">English</button>
-            <button onclick="changeLanguage('ru')">Русский</button>
-            <button onclick="changeLanguage('az')">Azərbaycan</button>
-        </div>
+        <div class="toggle-container">
+            <label for="language-toggle">Language</label>
+            <input type="checkbox" id="language-toggle" class="toggle" onchange="changeLanguage(this.checked ? 'ru' : 'en')">
 
-        <div class="currency-selector">
-            <button onclick="changeCurrency('USD')">USD</button>
-            <button onclick="changeCurrency('AZN')">AZN</button>
-            <button onclick="changeCurrency('RUB')">RUB</button>
+            <label for="currency-toggle">Currency</label>
+            <input type="checkbox" id="currency-toggle" class="toggle" onchange="changeCurrency(this.checked ? 'AZN' : 'USD')">
         </div>
     </header>
 
     <main>
         <section class="tour-cards">
             <div class="tour-card" id="night-baku">
-                <img src="baku-night.jpg" alt="Night Baku">
-                <h3 data-en="Night City Baku" data-ru="Ночной Баку" data-az="Gecə Baku"></h3>
-                <p data-en="Explore the vibrant night life of Baku." data-ru="Исследуйте яркую ночную жизнь Баку." data-az="Bakının canlı gecə həyatını kəşf edin."></p>
-                <p class="price" data-usd="111" data-azn="111" data-rub="111">$111 <span class="price-note">per 1 USD</span></p>
-                <button>Подробнее</button>
+                <a href="baku-night.html">
+                    <img src="baku-night.jpg" alt="Night Baku">
+                    <h3 data-en="Night City Baku" data-ru="Ночной Баку" data-az="Gecə Baku"></h3>
+                    <p data-en="Explore the vibrant night life of Baku." data-ru="Исследуйте яркую ночную жизнь Баку." data-az="Bakının canlı gecə həyatını kəşf edin."></p>
+                    <p class="price" data-usd="111" data-azn="111" data-rub="111">$111 <span class="price-note">per 1 USD</span></p>
+                    <button>Подробнее</button>
+                </a>
+                <div class="tour-history">
+                    <p data-en="Night Baku is a vibrant city tour where you can explore Baku's dazzling lights, cultural landmarks, and lively nightlife." 
+                       data-ru="Ночной Баку — это яркое ночное путешествие по городу, где можно исследовать ослепительные огни Баку, культурные достопримечательности и оживленную ночную жизнь." 
+                       data-az="Gecə Baku, Bakının parlaq işıqlarını, mədəniyyət abidələrini və canlı gecə həyatını kəşf edəcəyiniz parlaq bir şəhər turudur.">
+                    </p>
+                </div>
             </div>
             <div class="tour-card" id="qabala">
-                <img src="qabala.jpg" alt="Qabala">
-                <h3 data-en="Qabala" data-ru="Кабала" data-az="Qəbələ"></h3>
-                <p data-en="Visit the beautiful mountains and nature of Qabala." data-ru="Посетите красивые горы и природу Кабалы." data-az="Qəbələnin gözəl dağlarını və təbiətini ziyarət edin."></p>
-                <p class="price" data-usd="150" data-azn="150" data-rub="150">$150 <span class="price-note">per 1 USD</span></p>
-                <button>Подробнее</button>
-            </div>
-            <div class="tour-card" id="quba">
-                <img src="quba.jpg" alt="Quba">
-                <h3 data-en="Quba" data-ru="Куба" data-az="Quba"></h3>
-                <p data-en="Explore the rich history and culture of Quba." data-ru="Исследуйте богатую историю и культуру Кубы." data-az="Qubanı zəngin tarix və mədəniyyətlə kəşf edin."></p>
-                <p class="price" data-usd="120" data-azn="120" data-rub="120">$120 <span class="price-note">per 1 USD</span></p>
-                <button>Подробнее</button>
-            </div>
-            <div class="tour-card" id="quba-shahdag">
-                <img src="quba-shahdag.jpg" alt="Quba Shahdag">
-                <h3 data-en="Quba - Shahdag" data-ru="Куба - Шахдаг" data-az="Quba - Şahdağ"></h3>
-                <p data-en="A combination of cultural exploration and nature in Shahdag." data-ru="Комбинация культурного исследования и природы в Шахдаге." data-az="Şahdağda mədəniyyət və təbiət birləşməsi."></p>
-                <p class="price" data-usd="130" data-azn="130" data-rub="130">$130 <span class="price-note">per 1 USD</span></p>
-                <button>Подробнее</button>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2025 Tour Agency. All Rights Reserved.</p>
-    </footer>
-</body>
-</html>
+                <a href="qabala.html">
+                    <img src="qabala.jpg" alt="Qabala">
+                    <h3 data-en="Qabala" data-ru="Кабала" data-az="Qəbələ"></h3>
+                    <p data-en="Visit the beautiful mountains and nature of Qabala." data-ru="Посетите красивые горы и природу Кабалы." data-az="Qəbələnin gözəl dağlarını və təbiətini ziyarət edin."></p>
+                    <p class="price" data-usd="150" data-azn="150" data-rub="150">$150 <span class="price-note">per 1 USD</span></p>
+                    <button>Подробнее</button>
+                </a>
+                <div class="tour-history">
+                    <p data-en="Qabala is known for its stunning natural landscapes, perfect for hiking, adventure, and relaxation. Explore lush forests and majestic mountains."
+                       data-ru="Кабала извест
